@@ -5,17 +5,23 @@ module.exports = {
     pause: process.env.PAUSE || 0
   },
 
-  before : function(browser, done){
-    browser.windowMaximize().pause(this.options.pause + 800)
-    browser.url(this.options.url)
-    done()
-    
+  before : function(browser){
+    browser
+    .url(this.options.url)
+  },
+  'logs in to the app': function (browser){
+    var pause = this.options.pause
+    browser  
+    .waitForElementVisible('input.username', pause + 2000)
+    .setValue('input.username', 'user')
+    .setValue('input.password', 'pass')
+    .keys(browser.Keys.RETURN)
   },
   'adds todo messages' : function (browser) {
     var pause = this.options.pause
     browser  
-    .waitForElementVisible('.todoapp', pause + 1000)
-    .setValue('input.new-todo', "I'm a todo", function(){
+    .waitForElementVisible('input.new-todo', pause + 1000)
+    .setValue('input.new-todo', 'I\'m a todo', function(){
       browser
       .keys(browser.Keys.RETURN)
     })
